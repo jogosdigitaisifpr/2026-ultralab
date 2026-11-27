@@ -1,0 +1,452 @@
+using TMPro;
+using UnityEngine;
+
+public class Timer : MonoBehaviour
+{
+    public static Timer Instance { get; private set; }
+
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI timerText;
+
+
+    [Header("Configuração")]
+    [SerializeField] private int startHour = 8;
+    [SerializeField] private int endHour = 9;
+    private static int savedCurrentDay = 1;
+
+    private int currentDay = 1;
+
+    public int CurrentDay
+    {
+        get => currentDay;
+        set
+        {
+            currentDay = Mathf.Max(1, value);
+            savedCurrentDay = currentDay;
+        }
+    }
+
+    public static int CurrentDayValue
+    {
+        get => Instance != null
+            ? Instance.CurrentDay
+            : savedCurrentDay;
+    }
+
+
+    public int CurrentHour
+    {
+        get
+        {
+            return currentHour;
+        }
+    }
+
+
+    public int CurrentMinute
+    {
+        get
+        {
+            return currentMinute;
+        }
+    }
+
+
+    private int currentHour;
+    private int currentMinute;
+
+    private float secondCounter;
+
+    private bool timerRunning;
+
+
+    // =====================================================
+    // AWAKE / SINGLETON
+    // =====================================================
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Debug.LogWarning("[Timer] Instância duplicada; removendo o objeto duplicado.", this);
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+
+
+    // =====================================================
+    // START
+    // =====================================================
+
+    private void Start()
+    {
+        if (Instance != this)
+            return;
+
+        // =================================================
+        // EXISTE UM ESTADO SALVO?
+        // =================================================
+        //
+        // Isso acontece quando voltamos de outra cena.
+        //
+        // Nesse caso NÃO devemos mostrar DayTransition.
+        // Apenas restauramos o horário e continuamos.
+        // =================================================
+
+        if (GameSession.HasSavedTime)
+        {
+            GameSession.LoadTime(
+                out int savedDay,
+                out int savedHour,
+                out int savedMinute
+            );
+
+
+            CurrentDay =
+                savedDay;
+
+
+            currentHour =
+                savedHour;
+
+
+            currentMinute =
+                savedMinute;
+
+
+            UpdateClockText();
+
+
+            Debug.Log(
+                $"[Timer] Estado restaurado: " +
+                $"Dia {CurrentDay} - " +
+                $"{currentHour:00}:{currentMinute:00}"
+            );
+
+
+            StartDay();
+
+            return;
+        }
+
+
+        // =================================================
+        // NOVA PARTIDA
+        // =================================================
+
+        CurrentDay = 1;
+
+
+        currentHour =
+            startHour;
+
+
+        currentMinute = 0;
+
+
+        // =================================================
+        // SALVAR ESTADO INICIAL
+        // =================================================
+
+        SaveCurrentTime();
+
+
+        UpdateClockText();
+
+
+        // =================================================
+        // PRIMEIRO DIA
+        // =================================================
+        //
+        // Somente aqui mostramos:
+        //
+        // "Dia 1..."
+        //
+        // Ao voltar de outra cena isso NÃO acontece.
+        // =================================================
+
+        if (DayTransition.Instance != null)
+        {
+            DayTransition.Instance.BeginDay(
+                CurrentDay,
+                StartDay
+            );
+        }
+        else
+        {
+            Debug.LogError(
+                "DayTransition.Instance não encontrado!"
+            );
+
+
+            StartDay();
+        }
+    }
+
+
+    // =====================================================
+    // UPDATE
+    // =====================================================
+
+    private void Update()
+    {
+        if (!timerRunning)
+            return;
+
+
+        secondCounter +=
+            Time.deltaTime;
+
+
+        if (secondCounter >= 1f)
+        {
+            secondCounter -= 1f;
+
+            AddMinute();
+        }
+    }
+
+
+    // =====================================================
+    // ADICIONAR MINUTO
+    // =====================================================
+
+    private void AddMinute()
+    {
+        currentMinute++;
+
+
+        if (currentMinute >= 60)
+        {
+            currentMinute = 0;
+
+            currentHour++;
+        }
+
+
+        // =================================================
+        // SALVAR HORÁRIO
+        // =================================================
+
+        SaveCurrentTime();
+
+
+        UpdateClockText();
+
+
+        // =================================================
+        // FIM DO DIA
+        // =================================================
+
+        if (currentHour >= endHour)
+        {
+            timerRunning = false;
+
+            EndDay();
+        }
+    }
+
+
+    // =====================================================
+    // SALVAR HORÁRIO
+    // =====================================================
+
+    public void SaveCurrentTime()
+    {
+        GameSession.SaveTime(
+            CurrentDay,
+            currentHour,
+            currentMinute
+        );
+    }
+
+
+    // =====================================================
+    // FIM DO DIA
+    // =====================================================
+
+    private void EndDay()
+    {
+        if (DayTransition.Instance == null)
+        {
+            Debug.LogError(
+                "DayTransition.Instance não encontrado!"
+            );
+
+            return;
+        }
+
+
+        DayTransition.Instance
+            .CheckPatientsAtEndOfDay(
+                NextDay
+            );
+    }
+
+
+    // =====================================================
+    // PRÓXIMO DIA
+    // =====================================================
+
+    private void NextDay()
+    {
+        CurrentDay++;
+
+
+        currentHour =
+            startHour;
+
+
+        currentMinute = 0;
+
+
+        // =================================================
+        // SALVAR NOVO DIA
+        // =================================================
+
+        SaveCurrentTime();
+
+
+        UpdateClockText();
+
+
+        // =================================================
+        // AGORA SIM MOSTRAR DAY TRANSITION
+        // =================================================
+
+        if (DayTransition.Instance != null)
+        {
+            DayTransition.Instance.BeginDay(
+                CurrentDay,
+                StartDay
+            );
+        }
+        else
+        {
+            Debug.LogError(
+                "DayTransition.Instance não encontrado ao iniciar novo dia."
+            );
+
+
+            StartDay();
+        }
+    }
+
+
+    // =====================================================
+    // COMEÇAR DIA
+    // =====================================================
+
+    private void StartDay()
+    {
+        secondCounter = 0f;
+
+        timerRunning = true;
+    }
+
+
+    // =====================================================
+    // PULAR PARA PRÓXIMO DIA
+    // =====================================================
+
+
+
+    // =====================================================
+    // ATUALIZAR TEXTO
+    // =====================================================
+
+    private void UpdateClockText()
+    {
+        if (timerText == null)
+            return;
+
+
+        timerText.text =
+            $"{currentHour:00}:{currentMinute:00}";
+    }
+
+
+    // =====================================================
+    // SAIR DA CENA
+    // =====================================================
+
+    private void OnDestroy()
+    {
+        if (Instance != this)
+            return;
+
+        if (GameSession.HasSavedTime)
+            SaveCurrentTime();
+
+        Instance = null;
+    }
+
+    public void SkipToNextDay()
+    {
+        if (!timerRunning)
+        {
+            Debug.LogWarning("[Timer] O dia não pode ser pulado agora: o relógio já está parado ou uma transição está em andamento.");
+            return;
+        }
+
+        if (DayTransition.Instance == null)
+        {
+            Debug.LogError("[Timer] DayTransition.Instance não encontrado. O relógio continuará funcionando.");
+            return;
+        }
+
+        // Só para o relógio depois de confirmar que a transição existe.
+        timerRunning = false;
+        SaveCurrentTime();
+
+        DayTransition.Instance.CheckPatientsForSkipDay(OnSkipDayFinished);
+    }
+
+
+    public void DeveloperSkipToNextDay()
+    {
+        if (!timerRunning)
+        {
+            Debug.LogWarning(
+                "[Developer] Não é possível pular o dia durante uma transição."
+            );
+
+            return;
+        }
+
+        if (DayTransition.Instance == null)
+        {
+            Debug.LogError(
+                "[Developer] DayTransition não encontrado."
+            );
+
+            return;
+        }
+
+        // Parar o relógio.
+        timerRunning = false;
+
+        SaveCurrentTime();
+
+        // Utilizar o caminho exclusivo do modo desenvolvedor.
+        DayTransition.Instance.CheckPatientsForDeveloperSkipDay(
+            OnSkipDayFinished
+        );
+    }
+
+
+    private void OnSkipDayFinished(bool success)
+    {
+        if (success)
+        {
+            NextDay();
+        }
+        else
+        {
+            timerRunning = true;
+        }
+    }
+}

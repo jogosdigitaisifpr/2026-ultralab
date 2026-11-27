@@ -1,0 +1,100 @@
+using UnityEngine;
+using Unity.Cinemachine;
+
+public class CharacterSpawn : MonoBehaviour
+{
+    [SerializeField] private GameObject prefabMasculino;
+    [SerializeField] private GameObject prefabFeminino;
+    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private CinemachineCamera cinemachineCamera;
+
+    
+    private void Start()
+    {
+        SpawnPlayer();
+    }
+
+    public void SpawnPlayer()
+    {
+        if (boot_manager.instance != null)
+        {
+            boot_manager.instance.EnsurePlayerInstantiated();
+
+            if (boot_manager.instance.activePlayer != null)
+            {
+                GameManager.Instance.RegisterPlayer(boot_manager.instance.activePlayer);
+
+                if (cinemachineCamera != null)
+                    cinemachineCamera.Follow = boot_manager.instance.activePlayer.transform;
+
+                return;
+            }
+        }
+
+        
+        if (GameManager.Instance.HasPlayer())
+        {
+            if (cinemachineCamera != null)
+            {
+                cinemachineCamera.Follow = GameManager.Instance.Player.transform;
+            }
+            return;
+        }
+
+        string characterEscolhido = PlayerPrefs.GetString("Character", "");
+        if (string.IsNullOrEmpty(characterEscolhido) &&
+            save_manager.instance != null &&
+            save_manager.instance.currentData != null)
+        {
+            characterEscolhido = save_manager.instance.currentData.characterGender;
+        }
+
+        GameObject prefabParaInstanciar = null;
+
+        if (characterEscolhido == "Masculino")
+        {
+            prefabParaInstanciar = prefabMasculino;
+        }
+        else if (characterEscolhido == "Feminino" || characterEscolhido == "")
+        {
+            prefabParaInstanciar = prefabFeminino;
+        }
+
+        if (prefabParaInstanciar == null || spawnPoint == null)
+        {
+            Debug.LogError("Não foi possível criar o jogador: prefab ou ponto de spawn não configurado.");
+            return;
+        }
+
+        GameObject novoPersonagem = Instantiate(
+            prefabParaInstanciar,
+            spawnPoint.position,
+            spawnPoint.rotation
+        );
+
+        DontDestroyOnLoad(novoPersonagem);
+
+        PlayerReferences references = novoPersonagem.GetComponent<PlayerReferences>();
+        if (references != null)
+        {
+            references.RefreshReferences();
+            if (AndroidControl.Instance != null)
+            {
+                AndroidControl.Instance.SetPlayerInteraction(references.InteractionDetector);
+            }
+        }
+
+        GameManager.Instance.RegisterPlayer(novoPersonagem);
+
+        if (boot_manager.instance != null)
+        {
+            boot_manager.instance.RegisterPlayer(novoPersonagem);
+        }
+
+        if (cinemachineCamera != null)
+        {
+            cinemachineCamera.Follow = novoPersonagem.transform;
+        }
+    }
+    
+}

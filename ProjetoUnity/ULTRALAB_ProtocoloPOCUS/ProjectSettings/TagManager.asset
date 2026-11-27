@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Respawn
+  - Water
+  - UI
+  - a
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 2302739009
+    locked: 0
+  - name: Carpet
+    uniqueID: 1280235809
+    locked: 0
+  - name: Walls_Bottom
+    uniqueID: 1376749161
+    locked: 0
+  - name: Wall_decorations
+    uniqueID: 936567433
+    locked: 0
+  - name: Forniture
+    uniqueID: 319459515
+    locked: 0
+  - name: "Forniture_sobreposi\xE7\xE3o"
+    uniqueID: 3441886195
+    locked: 0
+  - name: Cortinas
+    uniqueID: 3389434683
+    locked: 0
+  - name: interactables
+    uniqueID: 2862543663
+    locked: 0
+  - name: Bancada
+    uniqueID: 512741183
+    locked: 0
+  - name: Player
+    uniqueID: 767058695
+    locked: 0
+  - name: Alice
+    uniqueID: 4112609647
+    locked: 0
+  - name: Wall_Top
+    uniqueID: 3897715341
+    locked: 0
+  - name: Forniture_top
+    uniqueID: 3327542503
+    locked: 0
+  - name: pacients
+    uniqueID: 359887817
+    locked: 0
+  - name: UI
+    uniqueID: 382699877
+    locked: 0
+  m_RenderingLayers:
+  - Default

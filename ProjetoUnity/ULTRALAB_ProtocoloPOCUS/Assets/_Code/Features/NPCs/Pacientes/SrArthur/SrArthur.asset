@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e9a48b0a2222bf4eb49fec462a1f8f7, type: 3}
+  m_Name: SrArthur
+  m_EditorClassIdentifier: Assembly-CSharp::PatientData
+  patientName: Arthur
+  age: 70
+  sex: Masculino
+  tutorial: 0
+  welfareScore: 50
+  food: 1
+  diagnosis: "Constipa\xE7\xE3o"
+  ultrasoundImageOptions:
+  - region: 0
+    image: {fileID: 21300000, guid: e44d795b6f895b44fbf7c6bab937d2c3, type: 3}
+  - region: 1
+    image: {fileID: 21300000, guid: 357e0d7de9a1824419e79a5f81b0393b, type: 3}
+  - region: 2
+    image: {fileID: 21300000, guid: 357e0d7de9a1824419e79a5f81b0393b, type: 3}
+  - region: 3
+    image: {fileID: 21300000, guid: 404035f515b861541b8b16c905ccab72, type: 3}
+  - region: 4
+    image: {fileID: -8527568592950175283, guid: 85d65de9e00d0044e98cd5df42c65431, type: 3}
+  characterSprite: {fileID: 21300000, guid: 2ce8c281f2ffa1f4c8c211cd60eb5040, type: 3}
+  characterFullSprite: {fileID: 21300000, guid: 7296aab20a2b8104fabf183700144f86, type: 3}
+  backgroundSprite: {fileID: 21300000, guid: 9cfbf36d2b0ad0146ad4df4e2befba0c, type: 3}
+  resumeCaso: 
+  physicalExam:
+  - region: 0
+    info: "Extremidades frias, indicando perfus\xE3o perif\xE9rica reduzida."
+  - region: 2
+    info: "Sem altera\xE7\xF5es."
+  - region: 1
+    info: "Presen\xE7a de edema bilateral +2/+4, com depress\xE3o \xE0 digitopress\xE3o
+      (sinal de cacifo)."
+  - region: 3
+    info: "Edema bilateral, com depress\xE3o \xE0 digitopress\xE3o (sinal de cacifo)
+      e extremidades frias."
+  permeabilidade: "P\xE9rvia"
+  presenca: "N\xE3o"
+  intervencao: "N\xE3o"
+  frequencia: 24
+  saturation: 93
+  acessoria: Sim
+  padraoRespiratorio: Dispneico
+  asculta: Estertores
+  expansibilidade: "Sim\xE9trica"
+  oxigenoterapiaTipo: Sem
+  oxigenoterapiaFluxo: 0
+  frequenciaCardiaca: 96
+  pressaoArterial: 104
+  pressaoArterial2: 68
+  perfusaoTempo: 0
+  perfusaoExtremidades: Frias
+  pulsos: "Palp\xE1veis"
+  ritmoCardiaco: Regular
+  edema: Sim
+  temperatura: 36
+  nivelConsciencia: Alerta
+  avalicaoPele: Hipocorado
+  presencaPele: Edema
+  dorEscala: 5

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd81a6fe40be39c4e83a96c320938fd9, type: 3}
+  m_Name: Sonar_Intro_Exams
+  m_EditorClassIdentifier: Assembly-CSharp::NPCdialogue
+  npcName: Sonar
+  npcPortrait: {fileID: 21300000, guid: 3a3d32b07deae594dbbe1db16cdf0ad0, type: 3}
+  dialogueLines:
+  - "Bem-vindo ao seu primeiro teste pr\xE1tico! Este \xE9 o ambiente onde voc\xEA
+    far\xE1 suas avalia\xE7\xF5es \xE0 beira-leito."
+  - "Voc\xEA pode interagir com o paciente, com o monitor e com o aparelho de ultrassom.
+    Explore os equipamentos para entender o que cada um faz!"
+  typingSpeed: 0.05
+  voiceEvent:
+    Guid:
+      Data1: -355241531
+      Data2: 1255865929
+      Data3: -907916883
+      Data4: 863556038
+    Path: event:/Falas/wa_morcego
+  voicePitch: 1
+  autoProgressLines: 
+  autoProgressDelay: 1.5

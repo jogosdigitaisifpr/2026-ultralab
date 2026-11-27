@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd81a6fe40be39c4e83a96c320938fd9, type: 3}
+  m_Name: Carla
+  m_EditorClassIdentifier: Assembly-CSharp::NPCdialogue
+  npcName: Carla
+  npcPortrait: {fileID: 21300000, guid: d47d8a5f76b32844d99571acab378f23, type: 3}
+  dialogueLines:
+  - "Respire fundo. Voc\xEA se preparou para este momento e a t\xE9cnica est\xE1
+    correta. Concentre-se na prova."
+  - Estamos aqui para validar seu conhecimento, mantenha o foco no paciente simulado.
+    Concentre-se na prova.
+  typingSpeed: 0.05
+  voiceEvent:
+    Guid:
+      Data1: 948884061
+      Data2: 1287636933
+      Data3: 415765634
+      Data4: 1763510883
+    Path: event:/Falas/wa_isadora
+  voicePitch: 1
+  autoProgressLines: 
+  autoProgressDelay: 1.5
